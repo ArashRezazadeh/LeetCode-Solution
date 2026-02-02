@@ -2,7 +2,10 @@
 
 Console.WriteLine("Select which solution to execute:");
 Console.WriteLine("1. TwoSum");
-Console.WriteLine("1. TwoSum");
+Console.WriteLine("2. Max Profit");
+Console.WriteLine("3. Contains Duplicate");
+
+
 Console.Write("Enter your choice (1-75): ");
 
 string choice = Console.ReadLine();
@@ -30,19 +33,33 @@ switch (choice)
         break;
     case "2":
         Console.WriteLine("Description");
-        Console.WriteLine("========================================================");
+        Console.WriteLine(" ======================================================== ");
         Console.WriteLine("\nYou are given an array of prices where prices[i] is the price of a");
         Console.WriteLine("\ngiven stock on an ith day. You want to maximize your profit by choosing a single day to buy");
         Console.WriteLine("\none stock and choosing a different day in the future to sell that stock.");
         Console.WriteLine("\nReturn the maximum profit you can achieve from this transaction.");
         Console.WriteLine("\nIf you cannot achieve any profit, return 0");
-        Console.WriteLine("========================================================");
+        Console.WriteLine(" ======================================================== ");
 
         int[] prices = UserArrayCreator();
         int result2 = MaxProfit(prices);
 
         Console.WriteLine($"\nArray as string: [{string.Join(", ", prices)}]");
         Console.WriteLine($"Maximum Profit: {result2}");
+        break;
+
+    case "3":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\nGiven an integer array nums, return true if any value appears at");
+        Console.WriteLine("\nleast twice in the array, and return false if every element is distinct.");
+        Console.WriteLine(" ======================================================== ");
+
+        int[] array = UserArrayCreator();
+        bool result3 = ContainsDuplicate(array);
+
+        Console.WriteLine($"\nArray as string: [{string.Join(", ", array)}]");
+        Console.WriteLine($"Contains Duplicate: {result3}");
         break;
     default:
         Console.WriteLine("Invalid choice!");
@@ -59,6 +76,22 @@ static int[] UserArrayCreator()
     Console.WriteLine($"\nArray as string: [{string.Join(", ", numbers)}]");
 
     return numbers;
+}
+
+static bool ContainsDuplicate(int[] nums)
+{
+    for (int i = 0; i < nums.Length; i++)
+    {
+        for (int j = i + 1; j < nums.Length; j++)
+        {
+            if (nums[i] == nums[j])
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 static int GetValidInteger(string message)
@@ -142,3 +175,4 @@ static int MaxProfit(int[] prices)
 
     return maxProfit;
 }
+
