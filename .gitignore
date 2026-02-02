@@ -52,3 +52,7 @@ artifacts/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+obj/*
+obj/**/*
+**/obj/*
