@@ -5,6 +5,7 @@ Console.WriteLine("1. TwoSum");
 Console.WriteLine("2. Max Profit");
 Console.WriteLine("3. Contains Duplicate");
 Console.WriteLine("4. Product of Array Except Self");
+Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -48,7 +49,6 @@ switch (choice)
         Console.WriteLine($"\nArray as string: [{string.Join(", ", prices)}]");
         Console.WriteLine($"Maximum Profit: {result2}");
         break;
-
     case "3":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
@@ -62,7 +62,6 @@ switch (choice)
         Console.WriteLine($"\nArray as string: [{string.Join(", ", array)}]");
         Console.WriteLine($"Contains Duplicate: {result3}");
         break;
-
     case "4":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
@@ -84,6 +83,20 @@ switch (choice)
 
         Console.WriteLine($"\nInput: [{string.Join(", ", array4)}]");
         Console.WriteLine($"Output: [{string.Join(", ", result4)}]");
+
+        break;
+    case "5":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\ngive an integer array nums, find the subarray with the largest sum, and retun its sum");
+        Console.WriteLine(" ======================================================== ");
+
+        int[] array5 = UserArrayCreator();
+        int result5 = MaxSubArray(array5);
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array5)}]");
+        Console.WriteLine($"Output: {result5}");
+
 
         break;
     default:
@@ -223,4 +236,32 @@ static int[] ProductExpectSelf(int[] nums)
 
     return answer;
 
+}
+
+static int MaxSubArray(int[] nums)
+{
+    if (nums == null || nums.Length == 0)
+    {
+        return 0;
+    }
+
+    int maxSum = int.MinValue;
+    int currentSum = 0;
+
+    foreach (int num in nums)
+    {
+        currentSum += num;
+
+        if (currentSum > maxSum)
+        {
+            maxSum = currentSum;
+        }
+
+        if (currentSum < 0)
+        {
+            maxSum = 0;
+        }
+    }
+
+    return maxSum;
 }
