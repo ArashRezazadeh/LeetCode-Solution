@@ -4,6 +4,7 @@ Console.WriteLine("Select which solution to execute:");
 Console.WriteLine("1. TwoSum");
 Console.WriteLine("2. Max Profit");
 Console.WriteLine("3. Contains Duplicate");
+Console.WriteLine("4. Product of Array Except Self");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -60,6 +61,30 @@ switch (choice)
 
         Console.WriteLine($"\nArray as string: [{string.Join(", ", array)}]");
         Console.WriteLine($"Contains Duplicate: {result3}");
+        break;
+
+    case "4":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\nGiven an integer array nums, return an array answer such that answer[i] ");
+        Console.WriteLine("\nis equal to the product of all the elements of nums except nums[I]. The product");
+        Console.WriteLine("\nof any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.");
+        Console.WriteLine(" ======================================================== ");
+
+        // Input: [ 1, 2, 3, 4]
+        // Output: [24, 12, 8, 6]
+        // Explanation: 
+        // answer[0] = 2*3*4 = 24
+        // answer[1] = 1*3*4 = 12
+        // answer[2] = 1*2*4 = 8
+        // answer[3] = 1*2*3 = 6
+
+        int[] array4 = UserArrayCreator();
+        int[] result4 = ProductExpectSelf(array4);
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array4)}]");
+        Console.WriteLine($"Output: [{string.Join(", ", result4)}]");
+
         break;
     default:
         Console.WriteLine("Invalid choice!");
@@ -176,3 +201,26 @@ static int MaxProfit(int[] prices)
     return maxProfit;
 }
 
+static int[] ProductExpectSelf(int[] nums)
+{
+    int n = nums.Length;
+    int[] answer = new int[n];
+
+    for (int i = 0; i < n; i++)
+    {
+        int product = 1;
+
+        for (int j = 0; j < n; j++)
+        {
+            if (i != j)
+            {
+                product *= nums[j];
+            }
+        }
+
+        answer[i] = product;
+    }
+
+    return answer;
+
+}
