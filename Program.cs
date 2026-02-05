@@ -6,6 +6,7 @@ Console.WriteLine("2. Max Profit");
 Console.WriteLine("3. Contains Duplicate");
 Console.WriteLine("4. Product of Array Except Self");
 Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
+Console.WriteLine("6. MaxProduct(Multiplication)");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -99,11 +100,52 @@ switch (choice)
 
 
         break;
+    case "6":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\ngiven an integer array nums. find a subarray that has largest product(MULTIPLICATION) and return the product!");
+        Console.WriteLine(" 1.Take a contiguous block of numbers from the array (a subarray)");
+        Console.WriteLine(" 2.Multiply all the numbers in that block together");
+        Console.WriteLine(" 3.Find which block gives you the biggest result when multiplied");
+        Console.WriteLine(" ======================================================== ");
+
+        int[] array6 = UserArrayCreator();
+        int result6 = MaxProduct(array6);
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array6)}]");
+        Console.WriteLine($"Output: {result6}");
+
+        break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
+
+static int MaxProduct(int[] nums)
+{
+    int maxProd = nums[0];
+    int minProd = nums[0];
+    int result = nums[0];
+
+
+    for (int i = 0; i < nums.Length; i++)
+    {
+        if (nums[i] < 0)
+        {
+            int temp = maxProd;
+            maxProd = minProd;
+            minProd = temp;
+        }
+
+        maxProd = Math.Max(nums[i], maxProd * nums[i]);
+        minProd = Math.Min(nums[i], minProd * nums[i]);
+
+        result = Math.Max(result, maxProd);
+    }
+
+    return result;
+}
 
 static int[] UserArrayCreator()
 {
