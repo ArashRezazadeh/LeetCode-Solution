@@ -7,6 +7,7 @@ Console.WriteLine("3. Contains Duplicate");
 Console.WriteLine("4. Product of Array Except Self");
 Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
 Console.WriteLine("6. MaxProduct(Multiplication)");
+Console.WriteLine("7. Minimum in Sorted Array");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -116,11 +117,57 @@ switch (choice)
         Console.WriteLine($"Output: {result6}");
 
         break;
+
+    case "7":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\nFind the Minimum in Rotated Sorted Array");
+        Console.WriteLine(" We use binary search to achieve O(log n) time complexity");
+        Console.WriteLine(" In a rotated sorted array, the minimum element is the only element that is smaller than both its neighbors");
+        Console.WriteLine(" How it works:");
+        Console.WriteLine(" * Compare the middle element with the rightmost element");
+        Console.WriteLine(" * If nums[mid] > nums[right], the minimum must be in the right half");
+        Console.WriteLine(" * Otherwise, the minimum must be in the left half (including mid)");
+        Console.WriteLine(" ======================================================== ");
+
+        int[] array7 = UserArrayCreator();
+        int result7 = FindMin(array7);
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array7)}]");
+        Console.WriteLine($"Output: {result7}");
+
+        break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
+
+
+static int FindMin(int[] nums)
+{
+    int left = 0;
+    int right = nums.Length - 1;
+
+    while (left < right)
+    {
+        int mid = left + (right - left) / 2;
+
+        // If mid element is greater than right element,
+        // minimum is in the right half
+        if (nums[mid] > nums[right])
+        {
+            left = mid + 1;
+        }
+        // Otherwise, minimum is in the left half (including mid)
+        else
+        {
+            right = mid;
+        }
+    }
+
+    return nums[left];
+}
 
 static int MaxProduct(int[] nums)
 {
