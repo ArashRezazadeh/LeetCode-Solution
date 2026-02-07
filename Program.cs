@@ -8,6 +8,7 @@ Console.WriteLine("4. Product of Array Except Self");
 Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
 Console.WriteLine("6. MaxProduct(Multiplication)");
 Console.WriteLine("7. Minimum in Sorted Array");
+Console.WriteLine("8. Search in rotates sorted array");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -19,7 +20,7 @@ switch (choice)
     case "1":
         Console.WriteLine("Description");
         Console.WriteLine("========================================================");
-        Console.WriteLine("\nGiven an array of integer nums and an integer target, return");
+        Console.WriteLine("\nGiven an array of integer numbers and an integer target, return");
         Console.WriteLine("\nindices of the two numbers such that they add up to the target.");
         Console.WriteLine("\nYou may assume that each input would have exactly one solution,");
         Console.WriteLine("\nand you may not use the same element twice.");
@@ -28,10 +29,10 @@ switch (choice)
 
         int targetNumb = GetValidInteger("Enter Target: ");
 
-        int[] nums = UserArrayCreator();
-        int[] result = TwoSum(nums, targetNumb);
+        int[] numbers = UserArrayCreator();
+        int[] result = TwoSum(numbers, targetNumb);
 
-        Console.WriteLine($"\nArray as string: [{string.Join(", ", nums)}] , target: {targetNumb}");
+        Console.WriteLine($"\nArray as string: [{string.Join(", ", numbers)}] , target: {targetNumb}");
         Console.WriteLine($"Output: [{result[0]}, {result[1]}]");
 
         break;
@@ -54,7 +55,7 @@ switch (choice)
     case "3":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
-        Console.WriteLine("\nGiven an integer array nums, return true if any value appears at");
+        Console.WriteLine("\nGiven an integer array numbers, return true if any value appears at");
         Console.WriteLine("\nleast twice in the array, and return false if every element is distinct.");
         Console.WriteLine(" ======================================================== ");
 
@@ -67,9 +68,9 @@ switch (choice)
     case "4":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
-        Console.WriteLine("\nGiven an integer array nums, return an array answer such that answer[i] ");
-        Console.WriteLine("\nis equal to the product of all the elements of nums except nums[I]. The product");
-        Console.WriteLine("\nof any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.");
+        Console.WriteLine("\nGiven an integer array numbers, return an array answer such that answer[i] ");
+        Console.WriteLine("\nis equal to the product of all the elements of numbers except numbers[I]. The product");
+        Console.WriteLine("\nof any prefix or suffix of numbers is guaranteed to fit in a 32-bit integer.");
         Console.WriteLine(" ======================================================== ");
 
         // Input: [ 1, 2, 3, 4]
@@ -90,7 +91,7 @@ switch (choice)
     case "5":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
-        Console.WriteLine("\ngive an integer array nums, find the subarray with the largest sum, and retun its sum");
+        Console.WriteLine("\ngive an integer array numbers, find the subarray with the largest sum, and retun its sum");
         Console.WriteLine(" ======================================================== ");
 
         int[] array5 = UserArrayCreator();
@@ -104,7 +105,7 @@ switch (choice)
     case "6":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
-        Console.WriteLine("\ngiven an integer array nums. find a subarray that has largest product(MULTIPLICATION) and return the product!");
+        Console.WriteLine("\ngiven an integer array numbers. find a subarray that has largest product(MULTIPLICATION) and return the product!");
         Console.WriteLine(" 1.Take a contiguous block of numbers from the array (a subarray)");
         Console.WriteLine(" 2.Multiply all the numbers in that block together");
         Console.WriteLine(" 3.Find which block gives you the biggest result when multiplied");
@@ -126,7 +127,7 @@ switch (choice)
         Console.WriteLine(" In a rotated sorted array, the minimum element is the only element that is smaller than both its neighbors");
         Console.WriteLine(" How it works:");
         Console.WriteLine(" * Compare the middle element with the rightmost element");
-        Console.WriteLine(" * If nums[mid] > nums[right], the minimum must be in the right half");
+        Console.WriteLine(" * If numbers[mid] > numbers[right], the minimum must be in the right half");
         Console.WriteLine(" * Otherwise, the minimum must be in the left half (including mid)");
         Console.WriteLine(" ======================================================== ");
 
@@ -137,6 +138,21 @@ switch (choice)
         Console.WriteLine($"Output: {result7}");
 
         break;
+
+    case "8":
+        Console.WriteLine("Description");
+        Console.WriteLine(" ======================================================== ");
+        Console.WriteLine("\ngiven the array numbers after possible rotation and an integer target, return the index ");
+        Console.WriteLine("of the target if it is in numbers,or -1 if it is not in numbers");
+        Console.WriteLine(" ======================================================== ");
+
+        int[] array8 = UserArrayCreator();
+        int target8 = GetValidInteger("Enter Target: ");
+        int result8 = SearchSortedArray(array8, target8);
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array8)}]");
+        Console.WriteLine($"Output: {result8}");
+        break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
@@ -144,10 +160,60 @@ switch (choice)
 
 
 
-static int FindMin(int[] nums)
+static int SearchSortedArray(int[] numbers, int target)
 {
     int left = 0;
-    int right = nums.Length - 1;
+    int right = numbers.Length - 1;
+
+    while (left <= right)
+    {
+        int mid = left + (right - left) / 2;
+
+        if (numbers[mid] == target)
+        {
+            return mid;
+        }
+
+
+        // determine which side is properly sorted
+        if (numbers[left] <= numbers[mid])
+        {
+            // Left side is sorted
+
+            if (target >= numbers[left] && target < numbers[mid])
+            {
+                // Target is in the left side
+                right = mid - 1;
+            }
+            else
+            {
+                // Target is in the right side
+                left = mid + 1;
+            }
+        }
+        else
+        {
+            // Left side is sorted
+            if (target > numbers[mid] && target < numbers[right])
+            {
+                // target is in the sorted right side
+                left = mid + 1;
+            }
+            else
+            {
+                // target is int the sorted left side
+                right = mid - 1;
+            }
+        }
+    }
+
+    return -1;
+}
+
+static int FindMin(int[] numbers)
+{
+    int left = 0;
+    int right = numbers.Length - 1;
 
     while (left < right)
     {
@@ -155,7 +221,7 @@ static int FindMin(int[] nums)
 
         // If mid element is greater than right element,
         // minimum is in the right half
-        if (nums[mid] > nums[right])
+        if (numbers[mid] > numbers[right])
         {
             left = mid + 1;
         }
@@ -166,27 +232,27 @@ static int FindMin(int[] nums)
         }
     }
 
-    return nums[left];
+    return numbers[left];
 }
 
-static int MaxProduct(int[] nums)
+static int MaxProduct(int[] numbers)
 {
-    int maxProd = nums[0];
-    int minProd = nums[0];
-    int result = nums[0];
+    int maxProd = numbers[0];
+    int minProd = numbers[0];
+    int result = numbers[0];
 
 
-    for (int i = 0; i < nums.Length; i++)
+    for (int i = 0; i < numbers.Length; i++)
     {
-        if (nums[i] < 0)
+        if (numbers[i] < 0)
         {
             int temp = maxProd;
             maxProd = minProd;
             minProd = temp;
         }
 
-        maxProd = Math.Max(nums[i], maxProd * nums[i]);
-        minProd = Math.Min(nums[i], minProd * nums[i]);
+        maxProd = Math.Max(numbers[i], maxProd * numbers[i]);
+        minProd = Math.Min(numbers[i], minProd * numbers[i]);
 
         result = Math.Max(result, maxProd);
     }
@@ -205,13 +271,13 @@ static int[] UserArrayCreator()
     return numbers;
 }
 
-static bool ContainsDuplicate(int[] nums)
+static bool ContainsDuplicate(int[] numbers)
 {
-    for (int i = 0; i < nums.Length; i++)
+    for (int i = 0; i < numbers.Length; i++)
     {
-        for (int j = i + 1; j < nums.Length; j++)
+        for (int j = i + 1; j < numbers.Length; j++)
         {
-            if (nums[i] == nums[j])
+            if (numbers[i] == numbers[j])
             {
                 return true;
             }
@@ -260,15 +326,15 @@ static int[] CreateArrayFromUserInputs()
     return array;
 }
 
-static int[] TwoSum(int[] nums, int target)
+static int[] TwoSum(int[] numbers, int target)
 {
 
-    for (int i = 0; i < nums.Length; i++)
+    for (int i = 0; i < numbers.Length; i++)
     {
-        for (int j = i + 1; j < nums.Length; j++)
+        for (int j = i + 1; j < numbers.Length; j++)
         {
             // Check if the pair sums to target
-            if (nums[i] + nums[j] == target)
+            if (numbers[i] + numbers[j] == target)
             {
                 return new int[] { i, j };
             }
@@ -303,9 +369,9 @@ static int MaxProfit(int[] prices)
     return maxProfit;
 }
 
-static int[] ProductExpectSelf(int[] nums)
+static int[] ProductExpectSelf(int[] numbers)
 {
-    int n = nums.Length;
+    int n = numbers.Length;
     int[] answer = new int[n];
 
     for (int i = 0; i < n; i++)
@@ -316,7 +382,7 @@ static int[] ProductExpectSelf(int[] nums)
         {
             if (i != j)
             {
-                product *= nums[j];
+                product *= numbers[j];
             }
         }
 
@@ -327,9 +393,9 @@ static int[] ProductExpectSelf(int[] nums)
 
 }
 
-static int MaxSubArray(int[] nums)
+static int MaxSubArray(int[] numbers)
 {
-    if (nums == null || nums.Length == 0)
+    if (numbers == null || numbers.Length == 0)
     {
         return 0;
     }
@@ -337,7 +403,7 @@ static int MaxSubArray(int[] nums)
     int maxSum = int.MinValue;
     int currentSum = 0;
 
-    foreach (int num in nums)
+    foreach (int num in numbers)
     {
         currentSum += num;
 
