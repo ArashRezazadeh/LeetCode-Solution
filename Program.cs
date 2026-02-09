@@ -9,6 +9,7 @@ Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
 Console.WriteLine("6. MaxProduct(Multiplication)");
 Console.WriteLine("7. Minimum in Sorted Array");
 Console.WriteLine("8. Search in rotates sorted array");
+Console.WriteLine("9. Three Sum Problem");
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -118,7 +119,6 @@ switch (choice)
         Console.WriteLine($"Output: {result6}");
 
         break;
-
     case "7":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
@@ -138,7 +138,6 @@ switch (choice)
         Console.WriteLine($"Output: {result7}");
 
         break;
-
     case "8":
         Console.WriteLine("Description");
         Console.WriteLine(" ======================================================== ");
@@ -153,12 +152,82 @@ switch (choice)
         Console.WriteLine($"\nInput: [{string.Join(", ", array8)}]");
         Console.WriteLine($"Output: {result8}");
         break;
+    case "9":
+        Console.WriteLine("Description");
+        Console.WriteLine("\n======================================================== ");
+        Console.WriteLine("\ngiven an integer array numbers, return all the triplets, [numbers[i],numbers[j],numbers[k]] ");
+        Console.WriteLine("\nsuch that i!-j, i!=k, and j!=k, and numbers[i] + numbers[j] + numbers[k] == 0");
+        Console.WriteLine("\nnotice that the solution set must not contain duplicate triplets.");
+        Console.WriteLine("\nComplexity:");
+        Console.WriteLine("\nTime: O(n²) (sorting O(n log n) + nested loops O(n²))");
+        Console.WriteLine("\nSpace: O(1) or O(n) depending on sorting implementation.");
+
+        Console.WriteLine(" \n======================================================== ");
+
+        int[] array9 = UserArrayCreator();
+        IList<IList<int>> result9 = ThreeSum(array9);
+
+
+        Console.WriteLine($"\nInput: [{string.Join(", ", array9)}]");
+
+        Console.WriteLine($"\nResult");
+        Console.WriteLine(" \n======================================================== ");
+        if (result9.Count == 0)
+        {
+            Console.WriteLine("No triplets found that sum to 0.");
+        }
+        else
+        {
+            Console.WriteLine($"Found {result9.Count} unique triplet(s):\n");
+
+            for (int i = 0; i < result9.Count; i++)
+            {
+                var triplet = result9[i];
+                Console.WriteLine($"{i + 1}. [{string.Join(", ", triplet)}]");
+                Console.WriteLine();
+            }
+        }
+        break;
+
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
+static IList<IList<int>> ThreeSum(int[] numbers)
+{
+    Array.Sort(numbers);
 
+    IList<IList<int>> result = new List<IList<int>>();
+
+    for (int i = 0; i < numbers.Length - 2; i++)
+    {
+        {
+            if (numbers == null || numbers.Length < 3)
+                return new List<IList<int>>();
+
+            HashSet<int> seen = new HashSet<int>();
+
+            for (int j = i + 1; j < numbers.Length; j++)
+            {
+                int complete = -numbers[i] - numbers[j];
+
+                if (seen.Contains(complete))
+                {
+                    result.Add(new List<int> { numbers[i], complete, numbers[j] });
+
+                    while (j + 1 < numbers.Length && numbers[j] == numbers[j + 1])
+                    {
+                        j++;
+                    }
+                }
+
+                seen.Add(numbers[j]);
+            }
+        }
+    }
+    return result;
+}
 
 static int SearchSortedArray(int[] numbers, int target)
 {
@@ -297,7 +366,7 @@ static int GetValidInteger(string message)
         Console.Write(message);
         string lengthInput = Console.ReadLine();
 
-        if (int.TryParse(lengthInput, out number) && number > 0)
+        if (int.TryParse(lengthInput, out number))
         {
             validNumber = true;
         }
