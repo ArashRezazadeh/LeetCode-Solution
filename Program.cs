@@ -10,6 +10,8 @@ Console.WriteLine("6. MaxProduct(Multiplication)");
 Console.WriteLine("7. Minimum in Sorted Array");
 Console.WriteLine("8. Search in rotates sorted array");
 Console.WriteLine("9. Three Sum Problem");
+Console.WriteLine("10. Longest substring without repeating characters");
+
 
 
 Console.Write("Enter your choice (1-75): ");
@@ -188,10 +190,39 @@ switch (choice)
             }
         }
         break;
+    case "10":
 
+        break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
+}
+
+static int LengthOfLongestSubstring(string s)
+{
+    Dictionary<char, int> lastSeen = new Dictionary<char, int>();
+
+    int maxLength = 0;
+    int left = 0;
+
+    for (int right = 0; right < s.Length; right++)
+    {
+        if (lastSeen.ContainsKey(s[right]))
+        {
+            // Move left pointer to the right of the last occurrence
+            // Use Max to ensure left doesn't move backwards
+
+            left = Math.Max(left, lastSeen[s[right]] + 1);
+        }
+
+        // Update or add the character's position
+        lastSeen[s[right]] = right;
+
+        // Calculate current window length
+        maxLength = Math.Max(maxLength, right - left + 1);
+    }
+
+    return maxLength;
 }
 
 static IList<IList<int>> ThreeSum(int[] numbers)
