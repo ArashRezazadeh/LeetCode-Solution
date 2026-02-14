@@ -277,7 +277,8 @@ static int LengthOfLongestSubstringUsingHashSet(string s)
 
     return maxLength;
 }
-#endregion 
+#endregion
+
 static IList<IList<int>> ThreeSum(int[] numbers)
 {
     Array.Sort(numbers);
