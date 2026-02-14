@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel.Design;
 
 Console.WriteLine("Select which solution to execute:");
-Console.WriteLine("1. TwoSum");
-Console.WriteLine("2. Max Profit");
-Console.WriteLine("3. Contains Duplicate");
-Console.WriteLine("4. Product of Array Except Self");
-Console.WriteLine("5. Kadane's Algorithm(MaxSubArray)");
-Console.WriteLine("6. MaxProduct(Multiplication)");
-Console.WriteLine("7. Minimum in Sorted Array");
-Console.WriteLine("8. Search in rotates sorted array");
-Console.WriteLine("9. Three Sum Problem");
-Console.WriteLine("10. Longest substring without repeating characters");
+Console.WriteLine("1.TwoSum");
+Console.WriteLine("2.Max Profit");
+Console.WriteLine("3.Contains Duplicate");
+Console.WriteLine("4.Product of Array Except Self");
+Console.WriteLine("5.Kadane's Algorithm(MaxSubArray)");
+Console.WriteLine("6.MaxProduct(Multiplication)");
+Console.WriteLine("7.Minimum in Sorted Array");
+Console.WriteLine("8.Search in rotates sorted array");
+Console.WriteLine("9.Three Sum Problem");
+Console.WriteLine("10.Longest substring without repeating characters");
 
 
 
@@ -191,40 +191,93 @@ switch (choice)
         }
         break;
     case "10":
+        Console.WriteLine("\nDescription");
+        Console.WriteLine("======================================================== ");
+        Console.WriteLine("\nGiven a string s, find the length of the longest substring without duplicate characters");
+        Console.WriteLine("\nExample 1:");
+        Console.WriteLine("\nInput: s = abcabcbb");
+        Console.WriteLine("Output: 3");
+        Console.WriteLine("Explanation: The answer is 'abc', with the length of 3. Note that 'bca' and 'cab' are also correct answers.");
 
+        Console.WriteLine("\nExample 2:");
+        Console.WriteLine("\nInput: s = bbbbb");
+        Console.WriteLine("Output: 1");
+        Console.WriteLine("Explanation: The answer is 'b', with the length of 1.");
+
+        Console.WriteLine("\nExample 3:");
+        Console.WriteLine("\nInput: s = pwwkew");
+        Console.WriteLine("Output: 3");
+        Console.WriteLine("Explanation: The answer is 'wke', with the length of 3.Notice that the answer must be a substring, 'pwke' is a subsequence and not a substring.");
+
+        Console.WriteLine("\n======================================================== ");
         break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
-static int LengthOfLongestSubstring(string s)
+
+
+#region  LengthOfLongestSubstring
+// Uses Dictionary to store the last index of each character
+static int LengthOfLongestSubstringUsingDict(string s)
 {
-    Dictionary<char, int> lastSeen = new Dictionary<char, int>();
+    // Dictionary to store the last index of each character
+    Dictionary<char, int> charIndexMap = new Dictionary<char, int>();
 
     int maxLength = 0;
-    int left = 0;
+    int left = 0; // Left pointer of the sliding window
 
     for (int right = 0; right < s.Length; right++)
     {
-        if (lastSeen.ContainsKey(s[right]))
-        {
-            // Move left pointer to the right of the last occurrence
-            // Use Max to ensure left doesn't move backwards
+        char currentChar = s[right];
 
-            left = Math.Max(left, lastSeen[s[right]] + 1);
+        // If the character is already in the dictionary and its index is within the current window
+        if (charIndexMap.ContainsKey(currentChar) && charIndexMap[currentChar] >= left)
+        {
+            // Move the left pointer to the right of the previous occurrence
+            left = charIndexMap[currentChar] + 1;
         }
 
-        // Update or add the character's position
-        lastSeen[s[right]] = right;
+        // Update the character's latest index
+        charIndexMap[currentChar] = right;
 
-        // Calculate current window length
-        maxLength = Math.Max(maxLength, right - left + 1);
+        // Calculate the current window length and update maxLength if needed
+        int currentLength = right - left + 1;
+        maxLength = Math.Max(maxLength, currentLength);
     }
 
     return maxLength;
 }
 
+static int LengthOfLongestSubstringUsingHashSet(string s)
+{
+    HashSet<char> charSet = new HashSet<char>();
+
+    int maxLength = 0;
+    int left = 0;
+    int right = 0;
+
+    while (right < s.Length)
+    {
+        // If the character is not in the set, add it and expand the window
+        if (!charSet.Contains(s[right]))
+        {
+            charSet.Add(s[right]);
+            maxLength = Math.Max(maxLength, right - left + 1);
+            right++;
+        }
+        // If the character is in the set, remove the leftmost character
+        else
+        {
+            charSet.Remove(s[left]);
+            left++;
+        }
+    }
+
+    return maxLength;
+}
+#endregion 
 static IList<IList<int>> ThreeSum(int[] numbers)
 {
     Array.Sort(numbers);
