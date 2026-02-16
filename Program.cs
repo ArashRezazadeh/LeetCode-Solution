@@ -210,6 +210,13 @@ switch (choice)
         Console.WriteLine("Explanation: The answer is 'wke', with the length of 3.Notice that the answer must be a substring, 'pwke' is a subsequence and not a substring.");
 
         Console.WriteLine("\n======================================================== ");
+
+        string userInput = GetUserCharacters();
+        int result10 = LengthOfLongestSubstringUsingDict(userInput);
+
+        Console.WriteLine($"\nInput: {userInput}");
+        Console.WriteLine($"\nResult would be: {result10} ");
+
         break;
     default:
         Console.WriteLine("Invalid choice!");
@@ -423,6 +430,15 @@ static int[] UserArrayCreator()
     Console.WriteLine($"\nArray as string: [{string.Join(", ", numbers)}]");
 
     return numbers;
+}
+
+
+static string GetUserCharacters()
+{
+    Console.WriteLine("Enter Your Characters:");
+    string userInput = Console.ReadLine();
+
+    return userInput;
 }
 
 static bool ContainsDuplicate(int[] numbers)
