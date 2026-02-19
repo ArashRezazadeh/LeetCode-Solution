@@ -11,6 +11,7 @@ Console.WriteLine("7.Minimum in Sorted Array");
 Console.WriteLine("8.Search in rotates sorted array");
 Console.WriteLine("9.Three Sum Problem");
 Console.WriteLine("10.Longest substring without repeating characters");
+Console.WriteLine("11.Median of Two Sorted Arrays");
 
 
 
@@ -193,21 +194,18 @@ switch (choice)
     case "10":
         Console.WriteLine("\nDescription");
         Console.WriteLine("======================================================== ");
-        Console.WriteLine("\nGiven a string s, find the length of the longest substring without duplicate characters");
+        Console.WriteLine("\nGiven two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.");
+        Console.WriteLine("\nThe overall run time complexity should be O(log (m+n)).");
+
         Console.WriteLine("\nExample 1:");
-        Console.WriteLine("\nInput: s = abcabcbb");
-        Console.WriteLine("Output: 3");
-        Console.WriteLine("Explanation: The answer is 'abc', with the length of 3. Note that 'bca' and 'cab' are also correct answers.");
+        Console.WriteLine("\nInput: nums1 = [1,3], nums2 = [2]");
+        Console.WriteLine("\nOutput: 2.00000");
+        Console.WriteLine("\nExplanation: merged array = [1,2,3] and median is 2.");
 
         Console.WriteLine("\nExample 2:");
-        Console.WriteLine("\nInput: s = bbbbb");
-        Console.WriteLine("Output: 1");
-        Console.WriteLine("Explanation: The answer is 'b', with the length of 1.");
-
-        Console.WriteLine("\nExample 3:");
-        Console.WriteLine("\nInput: s = pwwkew");
-        Console.WriteLine("Output: 3");
-        Console.WriteLine("Explanation: The answer is 'wke', with the length of 3.Notice that the answer must be a substring, 'pwke' is a subsequence and not a substring.");
+        Console.WriteLine("\nInput: nums1 = [1,2], nums2 = [3,4]");
+        Console.WriteLine("\nOutput: 2.50000");
+        Console.WriteLine("\nExplanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.");
 
         Console.WriteLine("\n======================================================== ");
 
@@ -218,12 +216,89 @@ switch (choice)
         Console.WriteLine($"\nResult would be: {result10} ");
 
         break;
+    case "11":
+        Console.WriteLine("\nDescription");
+        Console.WriteLine("======================================================== ");
+        Console.WriteLine("Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.");
+        Console.WriteLine("The overall run time complexity should be O(log (m+n)).");
+
+        Console.WriteLine("\nExample 1:");
+        Console.WriteLine("Input: nums1 = [1,3], nums2 = [2]");
+        Console.WriteLine("Output: 2.00000");
+        Console.WriteLine("Explanation: merged array = [1,2,3] and median is 2.");
+
+        Console.WriteLine("Example 2:");
+        Console.WriteLine("Input: nums1 = [1,2], nums2 = [3,4]");
+        Console.WriteLine("Output: 2.50000");
+        Console.WriteLine("Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.");
+
+        Console.WriteLine("\n======================================================== ");
+
+
+        break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
+static double FindMedianSortedArrays(int[] nums1, int[] nums2)
+{
+    // Ensure nums1 is the smaller array for efficiency
+    if (nums1.Length > nums2.Length)
+    {
+        return FindMedianSortedArrays(nums2, nums1);
+    }
 
+    int m = nums1.Length;
+    int n = nums2.Length;
+    int totalLeft = (m + n + 1) / 2; // Number of elements in the left partition
+
+    int left = 0;
+    int right = m;
+
+    while (left <= right)
+    {
+        // Partition nums1
+        int partition1 = (left + right) / 2;
+        // Partition nums2 (we need totalLeft elements in total)
+        int partition2 = totalLeft - partition1;
+
+        // Handle edge cases where partition is at boundaries
+        int left1 = (partition1 == 0) ? int.MinValue : nums1[partition1 - 1];
+        int right1 = (partition1 == m) ? int.MaxValue : nums1[partition1];
+        int left2 = (partition2 == 0) ? int.MinValue : nums2[partition2 - 1];
+        int right2 = (partition2 == n) ? int.MaxValue : nums2[partition2];
+
+        // Check if we found the correct partition
+        if (left1 <= right2 && left2 <= right1)
+        {
+            // Found the correct partition
+            if ((m + n) % 2 == 0)
+            {
+                // Even number of total elements
+                return (Math.Max(left1, left2) + Math.Min(right1, right2)) / 2.0;
+            }
+            else
+            {
+                // Odd number of total elements
+                return Math.Max(left1, left2);
+            }
+        }
+        else if (left1 > right2)
+        {
+            // Too many elements on left side from nums1, move left
+            right = partition1 - 1;
+        }
+        else
+        {
+            // Too few elements on left side from nums1, move right
+            left = partition1 + 1;
+        }
+    }
+
+    // Should never reach here if inputs are valid
+    throw new ArgumentException("Input arrays are not sorted");
+}
 
 #region  LengthOfLongestSubstring
 // Uses Dictionary to store the last index of each character
