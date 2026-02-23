@@ -235,12 +235,29 @@ switch (choice)
         Console.WriteLine("\n======================================================== ");
 
 
+        // Algorithm
+        // =======================================================
+        // 1.Ensure nums1 is the smaller array to optimize binary search
+        // 2.Perform binary search on the smaller array to find a valid partition
+        // 3.Check if the partition is correct using four boundary values
+        // 4.Calculate median based on even/ odd total length
+
+
+        int[] array11a = UserArrayCreator();
+
+        int[] array11b = UserArrayCreator();
+
+        var result11 = FindMedianSortedArrays(array11a, array11b);
+
         break;
     default:
         Console.WriteLine("Invalid choice!");
         break;
 }
 
+
+
+// See Readme #1
 static double FindMedianSortedArrays(int[] nums1, int[] nums2)
 {
     // Ensure nums1 is the smaller array for efficiency
@@ -258,9 +275,10 @@ static double FindMedianSortedArrays(int[] nums1, int[] nums2)
 
     while (left <= right)
     {
-        // Partition nums1
+        // middle point in nums1
         int partition1 = (left + right) / 2;
-        // Partition nums2 (we need totalLeft elements in total)
+
+        //  remaining elements needed from nums2 = totalLeft - partition1
         int partition2 = totalLeft - partition1;
 
         // Handle edge cases where partition is at boundaries
