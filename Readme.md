@@ -140,3 +140,18 @@ Now check:
 
 - `left1 (20) <= right2 (45)?` ✓
 - `left2 (35) <= right1 (30)?` ✗ (35 > 30) → Invalid partition!
+
+## #2 Longest Palindromic Substring
+
+A **palindromic substring** is a contiguous sequence of characters within a string that reads the same forwards and backwards.
+
+**Examples:**  
+String: **"babad"**
+
+- Palindromic substrings: "b", "a", "b", "a", "d", "bab", "aba"
+- Longest palindromic substring: "bab" or "aba"
+
+String: **"cbbd"**
+
+- Palindromic substrings: "c", "b", "b", "d", "bb"
+- Longest palindromic substring: "bb"

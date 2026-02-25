@@ -12,6 +12,7 @@ Console.WriteLine("8.Search in rotates sorted array");
 Console.WriteLine("9.Three Sum Problem");
 Console.WriteLine("10.Longest substring without repeating characters");
 Console.WriteLine("11.Median of Two Sorted Arrays");
+Console.WriteLine("12.Longest Palindromic Substring");
 
 
 
@@ -222,7 +223,7 @@ switch (choice)
         Console.WriteLine("Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.");
         Console.WriteLine("The overall run time complexity should be O(log (m+n)).");
 
-        Console.WriteLine("\nExample 1:");
+        Console.WriteLine("Example 1:");
         Console.WriteLine("Input: nums1 = [1,3], nums2 = [2]");
         Console.WriteLine("Output: 2.00000");
         Console.WriteLine("Explanation: merged array = [1,2,3] and median is 2.");
@@ -248,7 +249,35 @@ switch (choice)
         int[] array11b = UserArrayCreator();
 
         var result11 = FindMedianSortedArrays(array11a, array11b);
+        Console.WriteLine($"\nResult would be: {result11} ");
+        break;
+    case "12":
+        Console.WriteLine("\nDescription");
+        Console.WriteLine("======================================================== ");
+        Console.WriteLine("Given a string s, return the longest palindromic substring in s.");
+        Console.WriteLine("What is palindromic substring  ?");
+        Console.WriteLine("A palindromic substring is a contiguous sequence of characters within a string that reads the same forwards and backwards.");
+        Console.WriteLine("Examples:");
+        Console.WriteLine("Palindromic substrings: \"b\", \"a\", \"b\", \"a\", \"d\", \"bab\", \"aba\"");
+        Console.WriteLine("Longest palindromic substring: \"bab\" or \"aba");
+        Console.WriteLine("See ReadMe #2 for more information");
 
+        Console.WriteLine("\nExample 1: ");
+        Console.WriteLine("Input: s = \"babad\"");
+        Console.WriteLine("Output: \"bab\"");
+        Console.WriteLine("Explanation: \"aba\" is also a valid answer.");
+        Console.WriteLine("-------------------------------------------------");
+        Console.WriteLine("\nExample 2: ");
+        Console.WriteLine("Input: s = \"cbbd\"");
+        Console.WriteLine("Output: \"bb\"");
+
+        Console.WriteLine("\n======================================================== ");
+
+        string userInput12 = GetUserCharacters();
+        string result12 = FindLongestPalindromicSubstring(userInput12);
+
+        Console.WriteLine($"\nInput: {userInput12}");
+        Console.WriteLine($"\nResult would be: {result12} ");
         break;
     default:
         Console.WriteLine("Invalid choice!");
@@ -317,6 +346,59 @@ static double FindMedianSortedArrays(int[] nums1, int[] nums2)
     // Should never reach here if inputs are valid
     throw new ArgumentException("Input arrays are not sorted");
 }
+
+// See Readme #2
+static string FindLongestPalindromicSubstring(string s)
+{
+
+    if (string.IsNullOrEmpty(s)) return "";
+
+    // Transform string to handle even length palindromes
+    string transformed = "^#" + string.Join("#", s.ToCharArray()) + "#$";
+    int n = transformed.Length;
+    int[] palindromeRadii = new int[n];
+    int center = 0, right = 0;
+
+    for (int i = 1; i < n - 1; i++)
+    {
+        int mirror = 2 * center - i;
+
+        if (i < right)
+            palindromeRadii[i] = Math.Min(right - i, palindromeRadii[mirror]);
+
+        // Expand around center i
+        while (transformed[i + (1 + palindromeRadii[i])] ==
+               transformed[i - (1 + palindromeRadii[i])])
+        {
+            palindromeRadii[i]++;
+        }
+
+        // Adjust center and right boundary if expanded past right
+        if (i + palindromeRadii[i] > right)
+        {
+            center = i;
+            right = i + palindromeRadii[i];
+        }
+    }
+
+    // Find the maximum palindrome length
+    int maxLength = 0;
+    int centerIndex = 0;
+
+    for (int i = 1; i < n - 1; i++)
+    {
+        if (palindromeRadii[i] > maxLength)
+        {
+            maxLength = palindromeRadii[i];
+            centerIndex = i;
+        }
+    }
+
+    // Extract the original palindrome
+    int start = (centerIndex - maxLength) / 2;
+    return s.Substring(start, maxLength);
+}
+
 
 #region  LengthOfLongestSubstring
 // Uses Dictionary to store the last index of each character
@@ -520,7 +602,8 @@ static int[] UserArrayCreator()
 
     int[] numbers = CreateArrayFromUserInputs();
 
-    Console.WriteLine($"\nArray as string: [{string.Join(", ", numbers)}]");
+    Console.WriteLine($"Array as string: [{string.Join(", ", numbers)}]");
+    Console.WriteLine("==================");
 
     return numbers;
 }
@@ -575,11 +658,11 @@ static int GetValidInteger(string message)
 
 static int[] CreateArrayFromUserInputs()
 {
-    int length = GetValidInteger("\nEnter the length of the array: ");
+    int length = GetValidInteger("Enter the length of the array: ");
 
     int[] array = new int[length];
 
-    Console.WriteLine($"\nYou will now enter {length} number(s)");
+    Console.WriteLine($"You will now enter {length} number(s)");
 
     for (int i = 0; i < length; i++)
     {
